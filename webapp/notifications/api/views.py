@@ -15,15 +15,20 @@ from .serializers import (
 class ClientViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
-    # permission_classes = [IsOwnerOrReadOnly, ]
-    # pagination_class = LimitOffsetPagination
 
-    # def perform_create(self, serializer):
-    #     serializer.save(author=self.request.user)
 
 class MailingViewSet(viewsets.ModelViewSet):
     queryset = Mailing.objects.all()
     serializer_class = MailingSerializer
+
+    def create(self, request):
+        post = Mailing.objects.all()
+        serializer = MailingSerializer(data=request.data)
+        if serializer.is_valid():
+
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class MessageViewSet(viewsets.ModelViewSet):
     queryset = Message.objects.all()
