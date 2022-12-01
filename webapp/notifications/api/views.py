@@ -5,12 +5,12 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.pagination import LimitOffsetPagination
 
+from mailing_create.create_mail import new_mailing
 from clients_and_notes.models import Client, Mailing, Message
 from .serializers import (
     ClientSerializer, MailingSerializer,
     MessageSerializer
 )
-
 
 class ClientViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()
@@ -25,8 +25,8 @@ class MailingViewSet(viewsets.ModelViewSet):
         post = Mailing.objects.all()
         serializer = MailingSerializer(data=request.data)
         if serializer.is_valid():
-
             serializer.save()
+            new_mailing(serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
