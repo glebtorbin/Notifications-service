@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.pagination import LimitOffsetPagination
 
+from mailing_create.tasks import send_message
 from mailing_create.create_mail import new_mailing
 from clients_and_notes.models import Client, Mailing, Message
 from .serializers import (
