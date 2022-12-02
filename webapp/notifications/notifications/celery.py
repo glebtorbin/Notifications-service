@@ -1,6 +1,7 @@
 import os
 
 from celery import Celery
+from celery import shared_task
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'notifications.settings')
 
